@@ -21,4 +21,4 @@ Basic map editing tutorials can be found on [MathWorks](https://www.mathworks.co
 
 ## Training a Vehicle
 
-[Documentation](https://carla.readthedocs.io/en/0.9.15/ref_sensors/#rgb-camera) on sensor API.
+[Documentation](https://carla.readthedocs.io/en/0.9.15/ref_sensors/#rgb-camera) on sensors.
