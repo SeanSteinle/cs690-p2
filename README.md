@@ -20,3 +20,5 @@ Basic map editing tutorials can be found on [MathWorks](https://www.mathworks.co
 [This](https://carla.readthedocs.io/en/latest/tuto_M_generate_map/) is the documentation on how to transfer your scene (map) from RoadRunner into Carla.
 
 ## Training a Vehicle
+
+[Documentation](https://carla.readthedocs.io/en/0.9.15/ref_sensors/#rgb-camera) on sensor API.
