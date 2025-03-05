@@ -18,3 +18,5 @@ This service is used to design the map in which we'll train our vehicle. You can
 Basic map editing tutorials can be found on [MathWorks](https://www.mathworks.com/videos/series/getting-started-with-roadrunner.html).
 
 [This](https://carla.readthedocs.io/en/latest/tuto_M_generate_map/) is the documentation on how to transfer your scene (map) from RoadRunner into Carla.
+
+## Training a Vehicle
