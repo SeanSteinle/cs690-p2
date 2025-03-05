@@ -1,7 +1,9 @@
+import numpy as np
+import cv2
 import logging
 
 def listener(image):
-    # careful - will save many images
-    # image.save_to_disk('_out/%06d.png' % image.frame)
-    # logging.info(f'Saved image to disk: _out/{image.frame}.png')
-    pass
+    img = np.array(image.raw_data).reshape((image.height, image.width, 4)) # 4 channels: RGB
+    img = img[:, :, :3] # remove alpha channel
+    cv2.imshow('image', img) # displays images as they come in
+    cv2.waitKey(1)
