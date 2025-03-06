@@ -14,7 +14,7 @@ class Environment:
     STEER_AMT = 1.0
     IMAGE_WIDTH = 800
     IMAGE_HEIGHT = 600
-    EPISODE_TIME = 60.0
+    EPISODE_TIME = 10.0
     front_image = None
 
     def __init__(self, client, staring_location, show_camera_preview=False):
