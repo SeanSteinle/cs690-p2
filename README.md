@@ -25,13 +25,7 @@ Basic map editing tutorials can be found on [MathWorks](https://www.mathworks.co
 
 First start Carla.
 
-Next create some traffic.
-
-```bash
-py -3.7 generate_traffic.py -n 80
-```
-
-Start training.
+Then you can start training! It should also load the map and generate traffic (included the example in the directory)
 
 ```bash
 py -3.7 train.py
@@ -42,3 +36,9 @@ You can view the model statistic by running the following:
 ```bash
 tensorboard --logdir logs
 ```
+
+The code is basically straight from the linked video tutorial. There is some tweaks to parameters and rewards. It also currently starts in the same location every time.
+
+## Testing a Model
+
+TODO: Create a test scenario.
