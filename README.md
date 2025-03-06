@@ -22,3 +22,19 @@ Basic map editing tutorials can be found on [MathWorks](https://www.mathworks.co
 ## Training a Vehicle
 
 [Documentation](https://carla.readthedocs.io/en/0.9.15/ref_sensors/#rgb-camera) on sensors.
+
+First start Carla.
+
+Next create some traffic.
+
+Start training.
+
+```bash
+py -3.7 train.py
+```
+
+You can view the model statistic by running the following:
+
+```bash
+tensorboard --logdir logs
+```
