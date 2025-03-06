@@ -1,5 +1,6 @@
 numpy
 pygame
 opencv-python
-tensorflow>=2.4.1
+tensorflow[and-cuda]
+# tensorflow<2.11
 tqdm

@@ -15,7 +15,7 @@ MAP_NAME = 'Town03'
 SPAWN_POINT_IDX = 250
 
 FPS = 20
-EPISODES = 500
+EPISODES = 100
 AGGREGATE_STATS_EVERY = 10
 MODEL_NAME = 'Xception'
 
@@ -44,7 +44,8 @@ if __name__ == '__main__':
     logging.info(f'Loaded {MAP_NAME} map.')
 
     # Call an external Python function via shell
-    os.system('py -3.7 generate_traffic.py -n 125')
+    traffic_thread = Thread(target=os.system, args=('py -3.7 generate_traffic.py -n 125',))
+    traffic_thread.start()
 
     # set seed for repeat results
     random.seed(0)
@@ -123,5 +124,6 @@ if __name__ == '__main__':
 
     agent.terminate = True
     training_thread.join()
+    # traffic_thread.join()
     logging.info('Training complete.')
     agent.model.save(f'models/{MODEL_NAME}__{max_reward:_>7.2f}max_{average_reward:_>7.2f}avg_{min_reward:_>7.2f}min__{int(time.time())}.model')
