@@ -14,7 +14,7 @@ class Environment:
     STEER_AMT = 1.0
     IMAGE_WIDTH = 800
     IMAGE_HEIGHT = 600
-    EPISODE_TIME = 10.0
+    EPISODE_TIME = 60.0
     front_image = None
 
     def __init__(self, client, staring_location, show_camera_preview=False):
@@ -51,7 +51,11 @@ class Environment:
         self.actor_list = []
 
         # reset vehicle
-        self.vehicle = self.world.spawn_actor(self.charger_bp, self.transform)
+        try:
+            self.vehicle = self.world.spawn_actor(self.charger_bp, self.transform)
+        except: # if it tries to spawn into another vehicle
+            time.sleep(1)
+            return self.reset()
         self.actor_list.append(self.vehicle)
 
         # add data sensor(s)
@@ -92,12 +96,15 @@ class Environment:
         if len(self.collision_history) > 0:
             done = True
             reward = -50
-        elif kph < 50:
+        elif kph < 5: # move it!
             done = False
             reward = -1
-        else: # we are rewarding for high speed
+        elif kph < 50: # at least you are moving
             done = False
             reward = 1
+        else: # we are rewarding for high speed
+            done = False
+            reward = 10
 
         if self.episode_start + self.EPISODE_TIME < time.time():
             done = True

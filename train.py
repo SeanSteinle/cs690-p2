@@ -15,13 +15,13 @@ MAP_NAME = 'Town03'
 SPAWN_POINT_IDX = 250
 
 FPS = 20
-EPISODES = 100
+EPISODES = 500
 AGGREGATE_STATS_EVERY = 10
 MODEL_NAME = 'Xception'
 
 EPSILON = 1 # how much to favor exploration over exploitation
-EPSILON_DECAY = 0.95 # decrease epsilon over time
-MIN_EPSILON = 0.01
+EPSILON_DECAY = 0.995 # decrease epsilon over time
+MIN_EPSILON = 0.001
 
 
 if __name__ == '__main__':
@@ -42,6 +42,9 @@ if __name__ == '__main__':
     world = client.load_world(MAP_NAME)
     client.set_timeout(2.0)
     logging.info(f'Loaded {MAP_NAME} map.')
+
+    # Call an external Python function via shell
+    os.system('py -3.7 generate_traffic.py -n 125')
 
     # set seed for repeat results
     random.seed(0)
