@@ -27,6 +27,10 @@ First start Carla.
 
 Next create some traffic.
 
+```bash
+py -3.7 generate_traffic.py -n 80
+```
+
 Start training.
 
 ```bash
