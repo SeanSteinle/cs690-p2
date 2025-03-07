@@ -2,12 +2,13 @@
 
 ## Getting Started
 
-### Connecting to the Server (Alienware)
+### Connecting to the IT Server (Carla2)
 
-1. Install Cisco Secure Client, follow these instructions.
-2. Open the client and connect at this hostname: vpn.gmu.edu/vs-rare.
+1. Install Cisco Secure Client, follow these [instruction](https://its.gmu.edu/knowledge-base/how-to-use-2fa-with-vpn/).
+2. Open the client and connect at this hostname: `vpn.gmu.edu/vs-rare`.
 3. Authenticate with your password and MFA.
-4. If someone is already on the server, the client will keep reprompting logins. Else, you should be connected!
+4. For simple ssh access, in the terminal of your choice run: `ssh carla@10.192.127.96`.
+    - When prompted for password, type `Wednesday`.
 
 ### Matlab RoadRunner (Optional)
 

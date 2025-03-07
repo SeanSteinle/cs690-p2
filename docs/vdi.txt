@@ -1,0 +1,41 @@
+On the VM where you want to run the desktop.
+=========================================
+Note: This is for manual start up vnc for each user.
+You may want to setup system wide vnc server.
+
+
+
+In the home directory of the user, e.g. carla,
+mkdir .vnc
+create a file xstartup with these lines:
+#!/bin/bash
+xfce4-session
+
+chmod +x xstartup
+
+
+to launch vnc server with x server, run the command below. The vnc server will listen at port 5901 after this command:
+vncserver :1 -localhost no
+
+It will prompt to create password for remote access at first vncserver launch.
+
+
+to stop the vnc server:
+
+vncserver -kill :1
+
+
+On your local MAC or PC
+============================
+
+create ssh tunnel:
+
+Open a terminal and run this ssh
+ssh -L 5901:localhost:5901 carla@[vm ip address}
+
+Open a putty if using PC. At ssh tunnel part enter 5901:localhost for source and 5901 for destination. Then make the connection to the VM .
+
+
+Once you have tunnel extablished, start your vnc client. e.g. RealVNC Viewer
+
+Enter localhost and the port 5901 to connect.
