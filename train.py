@@ -14,7 +14,7 @@ from reinforcement_learning import Environment, Agent
 MAP_NAME = 'Town03'
 SPAWN_POINT_IDX = 250
 
-FPS = 60
+FPS = 20
 EPISODES = 10_000
 AGGREGATE_STATS_EVERY = 10
 MODEL_NAME = 'Xception'
@@ -69,6 +69,8 @@ if __name__ == '__main__':
     spawn_location = world.get_map().get_spawn_points()[SPAWN_POINT_IDX]
     env = Environment(client, spawn_location, show_camera_preview=False, random_spawns=True)
     agent = Agent()
+    # resume training from a saved model
+    # agent.model = tf.keras.models.load_model('models/Xception_____1.00max___-4.35avg__-29.00min__1741462023.model')
     epsiode_rewards = [-200]
     epsilon = EPSILON
 
