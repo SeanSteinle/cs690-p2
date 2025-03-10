@@ -15,12 +15,12 @@ MAP_NAME = 'Town03'
 SPAWN_POINT_IDX = 250
 
 FPS = 20
-EPISODES = 10_000
+EPISODES = 5_000
 AGGREGATE_STATS_EVERY = 10
 MODEL_NAME = 'Xception'
 
 EPSILON = 1 # how much to favor exploration over exploitation
-EPSILON_DECAY = 0.9975 # decrease epsilon over time
+EPSILON_DECAY = 0.995 # decrease epsilon over time
 MIN_EPSILON = 0.001
 
 

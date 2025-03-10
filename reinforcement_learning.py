@@ -94,7 +94,7 @@ class Environment:
         # perform action
         control = self.vehicle.get_control()
         if action == 0: # turn left
-            self.vehicle.apply_control(carla.VehicleControl(throttle=1.0, steer=max(0.0, control.steer - self.STEER_AMT)))
+            self.vehicle.apply_control(carla.VehicleControl(throttle=1.0, steer=max(-1.0, control.steer - self.STEER_AMT)))
         elif action == 1: # go straight
             self.vehicle.apply_control(carla.VehicleControl(throttle=1.0, steer=0.0))
         elif action == 2: # turn right
