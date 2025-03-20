@@ -12,6 +12,7 @@ from tqdm import tqdm
 from reinforcement_learning import Environment, Agent
 
 MAP_NAME = 'Town03'
+# MAP_NAME = 'CS690Project2'
 SPAWN_POINT_IDX = 250
 
 FPS = 20
