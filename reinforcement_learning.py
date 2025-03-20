@@ -11,19 +11,20 @@ from collections import deque
 import tensorflow as tf
 
 class Environment:
-    STEER_AMT = 1.0
+    STEER_AMT = 0.25
     IMAGE_WIDTH = 800
     IMAGE_HEIGHT = 600
-    EPISODE_TIME = 10.0
+    EPISODE_TIME = 60.0
     front_image = None
 
-    def __init__(self, client, staring_location, show_camera_preview=False):
+    def __init__(self, client, starting_location, show_camera_preview=False, random_spawns=False):
         self.client = client
         self.client.set_timeout(2.0)
         self.world = self.client.get_world()
         self.blueprint_library = self.world.get_blueprint_library()
         self.charger_bp = self.blueprint_library.filter('charger_police')[0]
-        self.transform = staring_location # always start at same spot
+        self.transform = starting_location
+        self.random_spawns = random_spawns
         self.show_preview = show_camera_preview
         logging.info('Connected to Carla server.')
 
@@ -33,7 +34,7 @@ class Environment:
         cam_bp.set_attribute('image_size_y', f'{self.IMAGE_HEIGHT}')
         cam_bp.set_attribute('fov', '110')
         # transform relative to host (will need to generalize input)
-        cam = self.world.spawn_actor(cam_bp, carla.Transform(carla.Location(x=1.5, z=2.4)), attach_to=self.vehicle)
+        cam = self.world.spawn_actor(cam_bp, carla.Transform(carla.Location(x=1.5, z=1.4)), attach_to=self.vehicle)
         cam.listen(self.image_listener)
         self.actor_list.append(cam)
 
@@ -51,6 +52,16 @@ class Environment:
         self.actor_list = []
 
         # reset vehicle
+        vehicles = self.world.get_actors().filter('vehicle.*')
+        if self.random_spawns:
+            map = self.world.get_map()
+            waypoints = map.generate_waypoints(2.0)  # Generate waypoints every 2 meters
+            random_waypoint = random.choice(waypoints)
+            self.transform = random_waypoint.transform
+        for vehicle in vehicles:
+            if self.transform.location.distance(vehicle.get_location()) < 10: # if vehicle is close to spawn location, wait to reset
+                time.sleep(1)
+                return self.reset()
         try:
             self.vehicle = self.world.spawn_actor(self.charger_bp, self.transform)
         except: # if it tries to spawn into another vehicle
@@ -81,30 +92,41 @@ class Environment:
 
     def step(self, action):
         # perform action
+        control = self.vehicle.get_control()
         if action == 0: # turn left
-            self.vehicle.apply_control(carla.VehicleControl(throttle=1.0, steer=-self.STEER_AMT))
+            self.vehicle.apply_control(carla.VehicleControl(throttle=1.0, steer=max(-1.0, control.steer - self.STEER_AMT)))
         elif action == 1: # go straight
             self.vehicle.apply_control(carla.VehicleControl(throttle=1.0, steer=0.0))
         elif action == 2: # turn right
-            self.vehicle.apply_control(carla.VehicleControl(throttle=1.0, steer=self.STEER_AMT))
+            self.vehicle.apply_control(carla.VehicleControl(throttle=1.0, steer=min(1.0, control.steer + self.STEER_AMT)))
 
-        # get data about vehicle
+        # get velocity data
         vel = self.vehicle.get_velocity()
         kph = int(3.6 * math.sqrt(vel.x**2 + vel.y**2 + vel.z**2))
 
+        # get road reference (distance to road)
+        waypoint = self.world.get_map().get_waypoint(self.vehicle.get_location())
+        waypoint_location = waypoint.transform.location
+        distance_to_road = self.vehicle.get_location().distance(waypoint_location)
+
         # calculate reward and done status
+        on_road_dist = 1.0
+        reward = 1
+        if distance_to_road > on_road_dist: # if we are off the road, reward is 0
+            reward = 0
         if len(self.collision_history) > 0:
             done = True
-            reward = -50
-        elif kph < 5: # move it!
-            done = False
             reward = -1
-        elif kph < 50: # at least you are moving
+        elif kph < 50: # penalize for low speed
             done = False
-            reward = 1
-        else: # we are rewarding for high speed
+            reward -= 1
+        else: # reward for high speed
             done = False
-            reward = 10
+            reward += 1
+
+        # penalize for sharp turns to prevent driving in circles
+        if abs(control.steer) > 0.5:
+            reward -= 1
 
         if self.episode_start + self.EPISODE_TIME < time.time():
             done = True

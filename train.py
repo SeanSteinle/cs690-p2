@@ -12,10 +12,11 @@ from tqdm import tqdm
 from reinforcement_learning import Environment, Agent
 
 MAP_NAME = 'Town03'
+# MAP_NAME = 'CS690Project2'
 SPAWN_POINT_IDX = 250
 
 FPS = 20
-EPISODES = 100
+EPISODES = 5_000
 AGGREGATE_STATS_EVERY = 10
 MODEL_NAME = 'Xception'
 
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
     # Setup client
-    client = carla.Client('127.0.0.1', 2000)
+    client = carla.Client('127.0.0.1', 3000)
     client.set_timeout(2.0)
     world = client.get_world()
     logging.info('Connected to Carla server.')
@@ -44,7 +45,7 @@ if __name__ == '__main__':
     logging.info(f'Loaded {MAP_NAME} map.')
 
     # Call an external Python function via shell
-    traffic_thread = Thread(target=os.system, args=('py -3.7 generate_traffic.py -n 125',))
+    traffic_thread = Thread(target=os.system, args=('py -3.7 generate_traffic.py -n 125 -p 3000',))
     traffic_thread.start()
 
     # set seed for repeat results
@@ -58,7 +59,7 @@ if __name__ == '__main__':
         try:
             tf.config.experimental.set_virtual_device_configuration(
                 gpus[0],
-                [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=8192)])  # Set memory limit in MB
+                [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=3500)])  # Set memory limit in MB
         except RuntimeError as e:
             print(e)
 
@@ -67,8 +68,10 @@ if __name__ == '__main__':
 
     # setup environment and agent to train
     spawn_location = world.get_map().get_spawn_points()[SPAWN_POINT_IDX]
-    env = Environment(client, spawn_location, show_camera_preview=False)
+    env = Environment(client, spawn_location, show_camera_preview=False, random_spawns=True)
     agent = Agent()
+    # resume training from a saved model
+    # agent.model = tf.keras.models.load_model('models/Xception_____1.00max___-4.35avg__-29.00min__1741462023.model')
     epsiode_rewards = [-200]
     epsilon = EPSILON
 
@@ -115,7 +118,7 @@ if __name__ == '__main__':
             max_reward = max(epsiode_rewards[-AGGREGATE_STATS_EVERY:])
             agent.tensorboard.update_stats(reward_avg=average_reward, reward_min=min_reward, reward_max=max_reward, epsilon=epsilon)
 
-            if min_reward >= 200:
+            if min_reward >= 200 or episode % 1000 == 0:
                 agent.model.save(f'models/{MODEL_NAME}__{max_reward:_>7.2f}max_{average_reward:_>7.2f}avg_{min_reward:_>7.2f}min__{int(time.time())}.model')
 
         if epsilon > MIN_EPSILON:
