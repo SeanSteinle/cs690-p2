@@ -11,12 +11,13 @@ from tqdm import tqdm
 
 from reinforcement_learning import Environment, Agent
 
-MAP_NAME = 'Town03'
-# MAP_NAME = 'CS690Project2'
+MAP_NAME = 'Town03' #our map is 'CS690Project2'
+LOAD_MODEL = False
+LOAD_MODEL_PATH = 'models/town3_100e/' #the model path should be a directory
 SPAWN_POINT_IDX = 250
 
 FPS = 20
-EPISODES = 5_000
+EPISODES = 100
 AGGREGATE_STATS_EVERY = 10
 MODEL_NAME = 'Xception'
 
@@ -70,8 +71,9 @@ if __name__ == '__main__':
     spawn_location = world.get_map().get_spawn_points()[SPAWN_POINT_IDX]
     env = Environment(client, spawn_location, show_camera_preview=False, random_spawns=True)
     agent = Agent()
-    # resume training from a saved model
-    # agent.model = tf.keras.models.load_model('models/Xception_____1.00max___-4.35avg__-29.00min__1741462023.model')
+    # optionally, resume training from a saved model
+    if LOAD_MODEL:
+        agent.model = tf.keras.models.load_model(LOAD_MODEL_PATH)
     epsiode_rewards = [-200]
     epsilon = EPSILON
 

@@ -1,14 +1,6 @@
 # Project II: Training An Autonoumous Vehicle
 
-## Getting Started
-
-### Connecting to the IT Server (Carla2)
-
-1. Install Cisco Secure Client, follow these [instruction](https://its.gmu.edu/knowledge-base/how-to-use-2fa-with-vpn/).
-2. Open the client and connect at this hostname: `vpn.gmu.edu/vs-rare`.
-3. Authenticate with your password and MFA.
-4. For simple ssh access, in the terminal of your choice run: `ssh carla@10.192.127.96`.
-    - When prompted for password, type `Wednesday`.
+## Installations
 
 ### Matlab RoadRunner (Optional)
 
@@ -31,7 +23,8 @@ Basic map editing tutorials can be found on [MathWorks](https://www.mathworks.co
 
 [Documentation](https://carla.readthedocs.io/en/0.9.15/ref_sensors/#rgb-camera) on sensors.
 
-First start Carla.
+First start the Carla server. You can do this by running the `carla_server` command from a Git Bash terminal.
+    - This doesn't work anymore. What did Joe change?
 
 Then you can start training! It should also load the map and generate traffic (included the example in the directory)
 
@@ -39,13 +32,24 @@ Then you can start training! It should also load the map and generate traffic (i
 py -3.7 train.py
 ```
 
-You can view the model statistic by running the following:
+You can view the model statistic by running the `tboard` alias in Git Bash or the following:
 
 ```bash
 tensorboard --logdir logs
 ```
 
 The code is basically straight from the linked video tutorial. There is some tweaks to parameters and rewards. It also currently starts in the same location every time.
+
+## Importing a Map
+
+[This](https://carla.readthedocs.io/en/0.9.15/core_map/#custom-maps) is a good place to start when adding a new map. You will quickly notice that the instructions for loading a map depend on whether or not you built Carla from source or installed it from a binary. If you built Carla from source, you have three options:
+1. Use the automatic make import process. Guide [here](https://carla.readthedocs.io/en/0.9.15/tuto_M_add_map_source/), comes as the recommended technique.
+2. Use the Roadrunner plugin. Guide [here](https://carla.readthedocs.io/en/0.9.15/tuto_M_add_map_alternative/#roadrunner-plugin-import).
+3. Manual import. Guide [here](https://carla.readthedocs.io/en/0.9.15/tuto_M_add_map_alternative/#manual-import).
+
+Unfortunately, if you installed Carla as a binary package you only have a single option: building the Unreal Emgine in a Docker image and compile Carla with that image. The challenge with this approach is that it has some serious requirements, the most strenuous of which is 700GB of available disk space for building container images. You can find the full guide [here](https://carla.readthedocs.io/en/0.9.15/tuto_M_add_map_package/).
+
+We've installed from a binary package. That leaves us limited options since we likely do not have 700GB of space on Joe's machine. Our next best bet is likely to install from source, but that requires completely ditching the Carla server we have now which is a big committment. Given this, I am going to ask Daniel what his thoughts are.
 
 ## Testing a Model
 
