@@ -11,15 +11,13 @@ from tqdm import tqdm
 
 from reinforcement_learning import Environment, Agent
 
-MAP_NAME = 'Town03' #our map is 'CS690Project2'
+MAP_NAME = 'Town01' #our map is 'CS690Project2'
 LOAD_MODEL_PATH = 'models/town3_100e/' #the model path should be a directory
-SPAWN_POINT_IDX = 250
+SPAWN_POINT_IDX = 84
 
 FPS = 20
 EPISODES = 100
 AGGREGATE_STATS_EVERY = 10
-MODEL_NAME = 'Xception'
-
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

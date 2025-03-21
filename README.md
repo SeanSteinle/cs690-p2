@@ -51,6 +51,39 @@ Unfortunately, if you installed Carla as a binary package you only have a single
 
 We've installed from a binary package. That leaves us limited options since we likely do not have 700GB of space on Joe's machine. Our next best bet is likely to install from source, but that requires completely ditching the Carla server we have now which is a big committment. Given this, I am going to ask Daniel what his thoughts are.
 
-## Testing a Model
+## Training / Testing
 
-TODO: Create a test scenario.
+Turnover:
+- show how to run
+- show training, testing scripts
+- show tensorboard
+- show map1, how to toggle maps
+
+Todo:
+- Train a long policy (~5,000 steps or until convergence!)
+- Test on 3-4 different maps (Carla maps like town1, town2, etc. then our map)
+- Capture images of our policy training, testing. Jot down basic behavior for shahriar to elaborate on in report.
+
+## Paper Writeup
+
+For our report I think we should write 3 main sections:
+- environment/infrastructure setup
+    - we spent a lot of time struggling on this so i'd go into detail describing what we've tried.
+        - setup on IT system vs. setup on Joe's
+        - building from source vs. building from binary package.
+        - struggles with remote desktops
+    - describe we were able to import maps but they kind of break (could put this in another section if you want)
+    - describe our final development setup
+- model design and training
+    - here we describe the methodology of our model. hint -- it's very simple!
+        - you should look at reinforcement_learning.py and train.py for this. describe epsilon greedy strategy, what observations we use, what the gym/environment looks like, etc.
+    - we took almost all of it from the youtube series, i would mention it explicitly and mention we modified a few things:
+        - added loading maps
+        - add saving / loading models for rollouts/eval on different maps
+    - can describe some of the things we'd improve
+        - better observations? or training on simple map first, then larger ones (kind of like curriculum learning), etc.
+- model performance and analysis
+    - summarize our performance quantitatively (via tensorboard stats)
+        - how did reward evolve, how to loss evolve, did we ever converge or should we have kept training, etc
+    - summarize our performance qualitatively (with the help of Sanjay's notes during training / testing)
+        - does the car know how to drive? does it learning an interpretable policy (like 'drive in circles')? if so, why do you think it did this (hint it was probably our reward structure!)
