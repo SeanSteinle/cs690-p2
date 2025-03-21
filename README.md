@@ -39,6 +39,7 @@ Todo:
 - Train a long policy (~5,000 steps or until convergence!)
 - Test on 3-4 different maps (Carla maps like town1, town2, etc. then our map)
 - Capture images of our policy training, testing. Jot down basic behavior for shahriar to elaborate on in report.
+    - this will require finding the car on the map! i haven't been able to do this!
 
 ### Paper Writeup
 
