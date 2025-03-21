@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 from reinforcement_learning import Environment, Agent
 
-MAP_NAME = 'Town01' #our map is 'CS690Project2'
+MAP_NAME = 'CS690Project2' #our map is 'CS690Project2'
 LOAD_MODEL_PATH = 'models/town3_100e/' #the model path should be a directory
 SPAWN_POINT_IDX = 84
 

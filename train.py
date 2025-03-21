@@ -14,7 +14,7 @@ from reinforcement_learning import Environment, Agent
 MAP_NAME = 'Town03' #our map is 'CS690Project2'
 LOAD_MODEL = False
 LOAD_MODEL_PATH = 'models/town3_100e/' #the model path should be a directory
-SPAWN_POINT_IDX = 250
+SPAWN_POINT_IDX = 250 #this is tricky to get right. BUT they're mapped out for town1...https://carla.readthedocs.io/en/stable/benchmark_creating/
 
 FPS = 20
 EPISODES = 100
